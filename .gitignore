@@ -1,0 +1,13 @@
+# Ignore secrets
+credentials*
+token*
+config
+local*
+# Ignore dev and runtime envrionment
+/.vscode/
+.venv/
+.ipynb_checkpoints/
+.terraform*
+terraform.tfstate*
+# Ignore platform files
+.DS_Store
