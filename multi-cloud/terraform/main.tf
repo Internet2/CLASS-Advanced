@@ -18,8 +18,10 @@ provider "google" {
     credentials = file(var.gcp_credentials_file)
 }
 
-module "home" {
+module "gcp" {
     source = "./gcp"
+    project = var.gcp_project
+    zone = var.gcp_zone
     username = var.username
     ssh_public_key = var.ssh_public_key
 }

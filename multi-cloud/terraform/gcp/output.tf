@@ -1,5 +1,5 @@
 output "ipv4" {
-    value = google_compute_address.zero.address
+    value = google_compute_address.grove.address
 }
 
 output "ipv6" {

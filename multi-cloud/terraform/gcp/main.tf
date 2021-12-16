@@ -1,41 +1,51 @@
-## Project Zero Go Home
+## GCP Environment
+
+## Locals
+locals {
+  region = join("-", slice(split("-", var.zone), 0, 2))
+  zone = var.zone
+  project = var.project
+}
 
 ## IAM Service Account
-resource "google_service_account" "zero" {
-    account_id = "zero-service-account"
-    display_name = "Project Zero service account"
+resource "google_service_account" "grove" {
+    account_id = "grove-service-account"
+    display_name = "Project grove service account"
 }
 
-resource "google_project_iam_member" "zero-container" {
+resource "google_project_iam_member" "grove-container" {
     role = "roles/container.admin"
-    member = "serviceAccount:${google_service_account.zero.email}"
+    member = "serviceAccount:${google_service_account.grove.email}"
+    project = local.project
 }
 
-resource "google_project_iam_member" "zero-compute" {
+resource "google_project_iam_member" "grove-compute" {
     role = "roles/compute.admin"
-    member = "serviceAccount:${google_service_account.zero.email}"
+    member = "serviceAccount:${google_service_account.grove.email}"
+    project = local.project
 }
 
-resource "google_compute_network" "zero" {
-    name = "zero-vpc"
+resource "google_compute_network" "grove" {
+    name = "grove-vpc"
     auto_create_subnetworks = false
 }
 
-resource "google_compute_subnetwork" "zero" {
-    name = "zero-subnet"
+resource "google_compute_subnetwork" "grove" {
+    name = "grove-subnet"
     ip_cidr_range = "10.0.0.0/16"
-    region = var.region
-    network = google_compute_network.zero.id
+    region = local.region
+    network = google_compute_network.grove.id
 }
 
-resource "google_compute_address" "zero" {
-    region = var.region
-    name = "zero-ipv4"
+resource "google_compute_address" "grove" {
+    region = local.region
+    name = "grove-ipv4"
 }
 
-resource "google_compute_firewall" "zero" {
-    name = "zero-firewall"
-    network = google_compute_network.zero.name
+resource "google_compute_firewall" "grove" {
+    name = "grove-firewall"
+    network = google_compute_network.grove.name
+    source_ranges = [ "0.0.0.0/0" ]
     
     allow {
         protocol = "icmp"
@@ -47,11 +57,11 @@ resource "google_compute_firewall" "zero" {
     }
 }
 
-resource "google_compute_instance" "zero" {
-    name = "zero"
+resource "google_compute_instance" "grove" {
+    name = "grove"
     #machine_type = "e2-small"
     machine_type = "c2-standard-4"
-    zone = var.zone
+    zone = local.zone
 
     allow_stopping_for_update = true
     metadata_startup_script = file("metadata-script.sh")
@@ -82,9 +92,9 @@ resource "google_compute_instance" "zero" {
     # }
 
     network_interface {
-        subnetwork = google_compute_subnetwork.zero.name
+        subnetwork = google_compute_subnetwork.grove.name
         access_config {
-            nat_ip = google_compute_address.zero.address
+            nat_ip = google_compute_address.grove.address
         }
     }
 
@@ -101,7 +111,7 @@ resource "google_compute_instance" "zero" {
     }
 
     service_account {
-        email = google_service_account.zero.email
+        email = google_service_account.grove.email
         scopes = ["cloud-platform"]
     }
 
@@ -110,17 +120,17 @@ resource "google_compute_instance" "zero" {
     }
 
     labels = {
-        zero = "home"
+        grove = "home"
     }
 }
 
-resource "google_container_cluster" "zero" {
-    name = "zero-container-cluster"
-    count = 1
-    initial_node_count = 3
-    location = var.zone
-    network = google_compute_network.zero.name
-    subnetwork = google_compute_subnetwork.zero.name
+resource "google_container_cluster" "grove" {
+    name = "grove-container-cluster"
+    count = 0
+    initial_node_count = 1
+    location = local.zone
+    network = google_compute_network.grove.name
+    subnetwork = google_compute_subnetwork.grove.name
 
     release_channel {
         channel = "RAPID"
@@ -135,6 +145,6 @@ resource "google_container_cluster" "zero" {
     }
 
     resource_labels = {
-      "zero" = "home-container-cluster"
+      "grove" = "home-container-cluster"
     }
 }
