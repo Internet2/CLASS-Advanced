@@ -8,7 +8,7 @@ variable "azure_credentials" {
     default = "../../secrets/credentials.azure"
 }
 
-variable "gcp_credentials_file" {
+variable "gcp_credentials" {
     type = string
     default = "../../secrets/credentials.gcp"
 }

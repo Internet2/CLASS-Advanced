@@ -1,3 +1,8 @@
+variable "credentials" {
+    type = string
+    default = "credentials.gcp"
+}
+
 variable "project" {
     type = string
 }

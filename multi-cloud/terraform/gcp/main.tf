@@ -1,5 +1,10 @@
 ## GCP Environment
 
+provider "google" {
+    project = var.project
+    credentials = file(var.credentials)
+}
+
 ## Locals
 locals {
   region = join("-", slice(split("-", var.zone), 0, 2))
