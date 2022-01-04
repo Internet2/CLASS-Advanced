@@ -1,6 +1,20 @@
-# Zero Go Home
+# Multi-Cloud Grove with Terraform
 
-## Setup accounts
+## Cloud Setup
+
+### GCP
+
+Create a service account with credentials with the following roles:
+ * Project Editor
+ * Security Admin
+
+Enable API's
+ * Cloud Resource Manager API
+
+
+## Legacy Documentation
+
+### Setup accounts
 Azure
 ```
 az login -u user@example.com

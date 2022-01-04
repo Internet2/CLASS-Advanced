@@ -1,13 +1,4 @@
-## Project Zero Go Home
-
-provider "azurerm" {
-    features {}
-    tenant_id = var.azure_tenant
-    subscription_id = var.azure_subscription
-    client_id = jsondecode(file(var.azure_credentials)).appId
-    client_secret = jsondecode(file(var.azure_credentials)).password
-}
-
+## CLASS Advanced multi-cloud terraform
 
 module "gcp" {
     source = "./gcp"
