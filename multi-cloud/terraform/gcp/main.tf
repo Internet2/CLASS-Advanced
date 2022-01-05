@@ -32,7 +32,7 @@ resource "google_project_iam_member" "grove-compute" {
 
 resource "google_compute_network" "grove" {
     name = "grove-vpc"
-    auto_create_subnetworks = false
+    auto_create_subnetworks = false # --subnet-mode=custom
 }
 
 resource "google_compute_subnetwork" "grove" {
@@ -40,6 +40,9 @@ resource "google_compute_subnetwork" "grove" {
     ip_cidr_range = "10.0.0.0/16"
     region = local.region
     network = google_compute_network.grove.id
+    # IPv6
+    stack_type = "IPV4_IPV6"
+    ipv6_access_type = "EXTERNAL"
 }
 
 resource "google_compute_address" "grove" {
@@ -47,13 +50,28 @@ resource "google_compute_address" "grove" {
     name = "grove-ipv4"
 }
 
-resource "google_compute_firewall" "grove" {
-    name = "grove-firewall"
+resource "google_compute_firewall" "grove-ip4" {
+    name = "grove-firewall-ipv4"
     network = google_compute_network.grove.name
     source_ranges = [ "0.0.0.0/0" ]
     
     allow {
         protocol = "icmp"
+    }
+
+    allow {
+        protocol = "tcp"
+        ports = ["22"]
+    }
+}
+
+resource "google_compute_firewall" "grove-ipv6" {
+    name = "grove-firewall-ipv6"
+    network = google_compute_network.grove.name
+    source_ranges = [ "::/0" ]
+    
+    allow {
+        protocol = 58
     }
 
     allow {
@@ -101,6 +119,8 @@ resource "google_compute_instance" "grove" {
         access_config {
             nat_ip = google_compute_address.grove.address
         }
+        # IPv6
+        stack_type = "IPV4_IPV6"
     }
 
     scheduling {

@@ -3,5 +3,6 @@ output "ipv4" {
 }
 
 output "ipv6" {
-    value = null
+    # borken
+    value = null # google_compute_instance.grove.network_interface[0].ipv6_access_config[0].external_ipv6
 }
