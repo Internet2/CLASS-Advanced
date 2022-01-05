@@ -145,7 +145,7 @@ resource "aws_instance" "grove" {
   #ami = data.aws_ami.debian.id
   #instance_type = "a1.medium" ## ARM
   #instance_type = "t3a.micro" ## AMD
-  instance_type = "t2.micro" ## AWS Educate
+  instance_type = "t2.small" # 1/2GiB ## AWS Educate 
   key_name = aws_key_pair.grove.id
   subnet_id = aws_subnet.grove.id
   vpc_security_group_ids = [aws_security_group.grove.id] 

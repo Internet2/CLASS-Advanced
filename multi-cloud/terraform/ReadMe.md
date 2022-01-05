@@ -11,6 +11,16 @@ Create a service account with credentials with the following roles:
 Enable API's
  * Cloud Resource Manager API
 
+### Azure
+
+Credentials
+```
+az login -u user@example.com
+az login --use-device-code # 2fa/CloudBank
+az account show
+az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/$SUBSCRIPTION_ID"
+
+```
 
 ## Legacy Documentation
 
