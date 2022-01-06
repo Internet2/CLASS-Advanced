@@ -24,6 +24,11 @@ variable "aws_region" {
     type = string
 }
 
+variable "azure_location" {
+    type = string
+    default = "eastus"
+}
+
 variable "azure_tenant" {
     type = string
 }

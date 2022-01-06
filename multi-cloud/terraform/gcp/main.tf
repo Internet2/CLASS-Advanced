@@ -24,7 +24,7 @@ resource "google_project_iam_member" "grove-container" {
     project = local.project
 }
 
-resource "google_project_iam_member" "grove-compute" {
+resource "google_project_iam_member" "grove_compute" {
     role = "roles/compute.admin"
     member = "serviceAccount:${google_service_account.grove.email}"
     project = local.project
@@ -45,12 +45,12 @@ resource "google_compute_subnetwork" "grove" {
     ipv6_access_type = "EXTERNAL"
 }
 
-resource "google_compute_address" "grove" {
+resource "google_compute_address" "grove_ipv4" {
     region = local.region
     name = "grove-ipv4"
 }
 
-resource "google_compute_firewall" "grove-ip4" {
+resource "google_compute_firewall" "grove_ip4" {
     name = "grove-firewall-ipv4"
     network = google_compute_network.grove.name
     source_ranges = [ "0.0.0.0/0" ]
@@ -65,7 +65,7 @@ resource "google_compute_firewall" "grove-ip4" {
     }
 }
 
-resource "google_compute_firewall" "grove-ipv6" {
+resource "google_compute_firewall" "grove_ipv6" {
     name = "grove-firewall-ipv6"
     network = google_compute_network.grove.name
     source_ranges = [ "::/0" ]
@@ -117,7 +117,7 @@ resource "google_compute_instance" "grove" {
     network_interface {
         subnetwork = google_compute_subnetwork.grove.name
         access_config {
-            nat_ip = google_compute_address.grove.address
+            nat_ip = google_compute_address.grove_ipv4.address
         }
         # IPv6
         stack_type = "IPV4_IPV6"

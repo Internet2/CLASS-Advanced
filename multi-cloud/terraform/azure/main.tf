@@ -11,7 +11,7 @@ provider "azurerm" {
 # Create a resource group.  Most resources are attached to a resource group.
 resource "azurerm_resource_group" "grove" {
     name = "grove-group"
-    location = "eastus" #var.azure_location
+    location = var.location
 }
 
 resource "azurerm_virtual_network" "grove" {

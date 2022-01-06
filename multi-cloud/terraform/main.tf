@@ -13,6 +13,7 @@ module "azure" {
     credentials = var.azure_credentials
     tenant = var.azure_tenant
     subscription = var.azure_subscription
+    location = var.azure_location
     username = var.username
     ssh_public_key = var.ssh_public_key
 }

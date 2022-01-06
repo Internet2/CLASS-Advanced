@@ -9,6 +9,11 @@ variable "credentials" {
     default = "credentials.azure"
 }
 
+variable "location" {
+    type = string
+    default = "eastus"
+}
+
 variable "tenant" {
     type = string
 }
