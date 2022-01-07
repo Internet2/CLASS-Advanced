@@ -7,7 +7,9 @@ if [ -z "$profile" ] ; then
     exit 1
 fi
 
+#REGIONS=$(aws ec2 describe-regions --region=us-east-1 --query='Regions[].[RegionName]' --output=text --no-cli-pager)
 REGIONS=( us-east-1 us-east-2 us-west-1 us-west-2 )
+
 AWS="aws --profile $profile --output text --no-cli-pager"
 
 echo "=== aws-list.sh $profile"
@@ -21,3 +23,6 @@ for REGION in ${REGIONS[@]} ; do
         --query 'Reservations[].Instances[*].[KeyName,Placement.AvailabilityZone,PublicIpAddress,Ipv6Address,InstanceType]' \
         --region $REGION
 done
+
+$AWS efs describe-file-systems \
+    --query 'FileSystems[].[FileSystemId, SizeInBytes.Value]'
