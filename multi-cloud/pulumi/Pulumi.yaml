@@ -1,0 +1,6 @@
+name: grove
+runtime:
+  name: python
+  options:
+    virtualenv: venv
+description: CLASS multi-cloud pulumi grove
