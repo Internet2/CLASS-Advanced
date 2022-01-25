@@ -1,2 +1,4 @@
-*.pyc
 venv/
+.pulumi/
+Pulumi.local.yaml
+*.pyc
