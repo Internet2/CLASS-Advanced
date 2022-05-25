@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: debug
+  labels:
+    app: debug
+spec:
+  selector:
+    matchLabels:
+      name: debug
+  template:
+    metadata:
+      labels:
+        name: debug
+    spec:
+      containers:
+        - name: debug
+          image: nicolaka/netshoot
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 500m
+          command: [ tail, -F, /var/log/container.log ]
